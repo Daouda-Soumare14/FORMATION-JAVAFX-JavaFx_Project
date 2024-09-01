@@ -1,0 +1,99 @@
+.close {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.close:hover {
+    -fx-background-color: #ff3547;
+}
+
+.minimize {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.minimize:hover {
+    -fx-background-color: #ddd;
+}
+
+.shadow {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 6.0, 0.0, 0.0);
+}
+
+.col {
+    -fx-background-color: #005632;
+    -fx-text-fill: white;
+    /* Correction ici pour la couleur du texte */
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: linear-gradient(to bottom right, #272b3f, #256b51);
+    -fx-border-radius: 8px;
+    -fx-padding: 0px;
+}
+
+.table-view .table-column {
+    -fx-text-alignment: CENTER;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #00600b;
+    -fx-background-insets: 0 0 0 0;
+    -fx-background-radius: 8px 8px 0px 0px;
+}
+
+.table-view .column-header, .filter {
+    -fx-background-color: transparent;
+    -fx-size: 50px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #fff;
+    -fx-font-family: "Times new roman";
+    -fx-font-size: 20px;
+}
+
+.textfield {
+    -fx-background-color: linear-gradient(to bottom, #efefef, #eee);
+    -fx-border-color: linear-gradient(to bottom right, #272b3f, #256b51);
+    -fx-border-width: .8px;
+    -fx-font-family: "Times new roman";
+    -fx-border-radius: 4px;
+}
+
+.textfield:focused {
+    -fx-border-width: 1.8px;
+}
+
+.search {
+    -fx-background-color: transparent;
+    -fx-border-color: linear-gradient(to bottom right, #272b3f, #256b51);
+    -fx-border-radius: 5px;
+    -fx-size: 40px;
+    -fx-font-family: "Times new roman";
+    -fx-border-width: 1px;
+    -fx-background-radius: 0px 0px 0px 28px;
+}
+
+.search:focused {
+    -fx-border-width: 2px;
+}
+
+.button-crud {
+    -fx-background-radius: 10; /* Définit le rayon de la bordure pour l'arrondir */
+    -fx-border-radius: 7; /* Définit le rayon de la bordure si une bordure est définie */
+}
+
+.image {
+    -fx-background-radius: 10; /* Définit le rayon de la bordure pour l'arrondir */
+    -fx-border-radius: 7; /* Définit le rayon de la bordure si une bordure est définie */
+}
+
+.textfield-buttonChoise{
+    -fx-background-color: linear-gradient(to bottom, #efefef, #eee);
+    -fx-border-color: linear-gradient(to bottom right, #272b3f, #256b51);
+    -fx-border-radius: 4px;
+    -fx-border-width: .8px;
+    -fx-font-family: "Times new roman";
+}
