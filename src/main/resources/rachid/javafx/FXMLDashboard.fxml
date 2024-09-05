@@ -67,12 +67,12 @@
                                  </font>
                               </Label>
                               <Line endX="68.0" layoutX="121.0" layoutY="220.0" startX="-100.0" stroke="WHITE" />
-                              <Button fx:id="home_btn" layoutX="21.0" layoutY="243.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: transparent;" text="Home" textFill="WHITE" AnchorPane.leftAnchor="21.0">
+                              <Button fx:id="home_btn" layoutX="21.0" layoutY="243.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: transparent;" text="Home" textFill="WHITE" AnchorPane.leftAnchor="21.0">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="addEmployee_btn" layoutX="46.0" layoutY="278.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="104.0" style="-fx-background-color: transparent;" text="Add Employee" textFill="WHITE" AnchorPane.leftAnchor="46.0">
+                              <Button fx:id="addEmployee_btn" layoutX="46.0" layoutY="278.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="104.0" style="-fx-background-color: transparent;" text="Add Employee" textFill="WHITE" AnchorPane.leftAnchor="46.0">
                                  <padding>
                                     <Insets top="2.0" />
                                  </padding>
@@ -80,7 +80,7 @@
                                     <Font size="16.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="salary_btn" layoutX="41.0" layoutY="312.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="125.0" style="-fx-background-color: transparent;" text="Employee Salary" textFill="WHITE" AnchorPane.leftAnchor="41.0">
+                              <Button fx:id="salary_btn" layoutX="41.0" layoutY="312.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="125.0" style="-fx-background-color: transparent;" text="Employee Salary" textFill="WHITE" AnchorPane.leftAnchor="41.0">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
@@ -249,8 +249,8 @@
                                                 <DropShadow />
                                              </effect>
                                              <children>
-                                                <Button fx:id="addEmployee_importBtn" layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="Import" textFill="RED" AnchorPane.bottomAnchor="0.0" />
                                                 <ImageView fx:id="addEmployee_image" fitHeight="150.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true" />
+                                                <Button fx:id="addEmployee_importBtn" layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="Import" textFill="RED" AnchorPane.bottomAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                           <Button fx:id="addEmployee_addBtn" layoutX="728.0" layoutY="566.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="105.0" style="-fx-background-color: #0f00e8;" styleClass="button-crud" stylesheets="@DashboardDesign.css" text="Add" textFill="WHITE">

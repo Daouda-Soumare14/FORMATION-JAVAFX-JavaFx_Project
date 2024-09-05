@@ -69,6 +69,9 @@ public class EmployeeManagementSystemController implements Initializable {
                 alert.showAndWait();
             } else {
                 if (result.next()) {
+
+                    GetData.username = username.getText();
+
                     alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Message d'inforamtion");
                     alert.setHeaderText(null);

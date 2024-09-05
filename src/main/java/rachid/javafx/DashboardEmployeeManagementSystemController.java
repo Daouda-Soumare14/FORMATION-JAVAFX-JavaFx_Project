@@ -1,10 +1,19 @@
 package rachid.javafx;
 
+import java.beans.Statement;
+import java.io.File;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,9 +29,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -38,25 +50,28 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
     private Button addEmployee_clearBtn;
 
     @FXML
-    private TableColumn<?, ?> addEmployee_col_date;
+    private TableView<EmployeeData> addEmployee_tableView;
 
     @FXML
-    private TableColumn<?, ?> addEmployee_col_employeeID;
+    private TableColumn<EmployeeData, String> addEmployee_col_date;
 
     @FXML
-    private TableColumn<?, ?> addEmployee_col_genre;
+    private TableColumn<EmployeeData, String> addEmployee_col_employeeID;
 
     @FXML
-    private TableColumn<?, ?> addEmployee_col_nom;
+    private TableColumn<EmployeeData, String> addEmployee_col_genre;
 
     @FXML
-    private TableColumn<?, ?> addEmployee_col_phoneNum;
+    private TableColumn<EmployeeData, String> addEmployee_col_nom;
 
     @FXML
-    private TableColumn<?, ?> addEmployee_col_position;
+    private TableColumn<EmployeeData, String> addEmployee_col_phoneNum;
 
     @FXML
-    private TableColumn<?, ?> addEmployee_col_prenom;
+    private TableColumn<EmployeeData, String> addEmployee_col_position;
+
+    @FXML
+    private TableColumn<EmployeeData, String> addEmployee_col_prenom;
 
     @FXML
     private Button addEmployee_deleteBtn;
@@ -90,9 +105,6 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
 
     @FXML
     private TextField addEmployee_search;
-
-    @FXML
-    private TableView<?> addEmployee_tableView;
 
     @FXML
     private Button addEmployee_updateBtn;
@@ -178,6 +190,125 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
     private double x = 0;
     private double y = 0;
 
+    private Connection connect;
+    private Statement statement;
+    private PreparedStatement prepare;
+    private ResultSet result;
+
+    private Image image;
+
+    public void addEmpoyeeInsertImage()
+    {
+        FileChooser open = new FileChooser();
+        File file = open.showOpenDialog(main_form.getScene().getWindow());
+
+        if (file != null) {
+            GetData.path = file.getAbsolutePath();
+            
+            image = new Image(file.toURI().toString(), 101, 150, false, true);
+            addEmployee_image.setImage(image);
+        }
+    }
+
+    public ObservableList<EmployeeData> addEmployeeListeData()
+    {
+        ObservableList<EmployeeData> listeData = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM employee";
+
+        connect = DatabaseConnection.connection();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+            EmployeeData employeeData;
+
+            while (result.next()) {
+                employeeData = new EmployeeData(result.getInt("employee_id"),
+                                result.getString("prenom"),
+                                result.getString("nom"),
+                                result.getString("genre"),
+                                result.getString("phoneNum"),
+                                result.getString("position"),
+                                result.getString("image"),
+                                result.getDate("membreDate"));
+                listeData.add(employeeData);
+            }
+        } catch (Exception e) {e.printStackTrace();}
+        return listeData;
+    }
+
+    private ObservableList<EmployeeData> addEmployeeList;
+    public void addEmployeeShowListData()
+    {
+        addEmployeeList = addEmployeeListeData();
+
+        addEmployee_col_employeeID.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
+        addEmployee_col_prenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+        addEmployee_col_nom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        addEmployee_col_genre.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        addEmployee_col_phoneNum.setCellValueFactory(new PropertyValueFactory<>("phoneNum"));
+        addEmployee_col_position.setCellValueFactory(new PropertyValueFactory<>("position"));
+        addEmployee_col_date.setCellValueFactory(new PropertyValueFactory<>("membreDate"));
+
+        addEmployee_tableView.setItems(addEmployeeList);
+    }
+
+    public void addEmpoyeeSelect()
+    {
+        EmployeeData employeeData = addEmployee_tableView.getSelectionModel().getSelectedItem();
+        int num = addEmployee_tableView.getSelectionModel().getSelectedIndex();
+
+        if ((num -1) < -1) {return;}
+
+        addEmployee_employeeID.setText(String.valueOf(employeeData.getEmployee_id()));
+        addEmployee_prenom.setText(employeeData.getPrenom());
+        addEmployee_nom.setText(employeeData.getNom());
+        addEmployee_phoneNum.setText(employeeData.getPhoneNum());
+
+        String uri = "file:" + employeeData.getImage();
+
+        image = new Image(uri, 101, 150, false, true);
+        addEmployee_image.setImage(image);
+
+    }
+
+    public void displayUsername()
+    {
+        username.setText(GetData.username);
+    }
+
+    @SuppressWarnings("exports")
+    public void switchForm(ActionEvent event)
+    {
+        if (event.getSource() == home_btn) {
+            home_form.setVisible(true);
+            addEmployee_form.setVisible(false);
+            salary_form.setVisible(false);
+
+            home_btn.setStyle("-fx-background-color: linear-gradient(to bottom right, #3a4368, #28966c);");
+            addEmployee_btn.setStyle("-fx-background-color: transparent");
+            salary_btn.setStyle("-fx-background-color: transparent");
+        }
+        else if (event.getSource() == addEmployee_btn) {
+            home_form.setVisible(false);
+            addEmployee_form.setVisible(true);
+            salary_form.setVisible(false);
+
+            addEmployee_btn.setStyle("-fx-background-color: linear-gradient(to bottom right, #3a4368, #28966c);");
+            home_btn.setStyle("-fx-background-color: transparent");
+            salary_btn.setStyle("-fx-background-color: transparent");
+        }
+        else if (event.getSource() == salary_btn) {
+            home_form.setVisible(false);
+            addEmployee_form.setVisible(false);
+            salary_form.setVisible(true);
+
+            salary_btn.setStyle("-fx-background-color: linear-gradient(to bottom right, #3a4368, #28966c);");
+            home_btn.setStyle("-fx-background-color: transparent");
+            addEmployee_btn.setStyle("-fx-background-color: transparent");
+        }
+    }
+
     @FXML
     public void logout() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -225,6 +356,8 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) 
+    {
+        addEmployeeShowListData();
     }
 }
