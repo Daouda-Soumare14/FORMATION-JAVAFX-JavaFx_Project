@@ -5,7 +5,7 @@ module rachid.javafx {
     requires javafx.graphics;
     requires de.jensd.fx.glyphs.fontawesome;
     requires java.desktop;
-    requires mysql.connector.java;
+    // requires mysql.connector.java;
 
 
     opens rachid.javafx to javafx.fxml;

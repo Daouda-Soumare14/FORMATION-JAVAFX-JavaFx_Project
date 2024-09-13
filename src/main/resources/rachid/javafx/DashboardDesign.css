@@ -16,14 +16,14 @@
     -fx-background-color: #ddd;
 }
 
+/* Correction de l'ombre ici */
 .shadow {
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 6.0, 0.0, 0.0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 6.0, 0.0, 0.0, 2.0); /* Ajout des décalages X et Y */
 }
 
 .col {
     -fx-background-color: #005632;
     -fx-text-fill: white;
-    /* Correction ici pour la couleur du texte */
 }
 
 .table-view {
@@ -45,20 +45,20 @@
 
 .table-view .column-header, .filter {
     -fx-background-color: transparent;
-    -fx-size: 50px;
+    /* -fx-size n'existe pas, donc suppression */
 }
 
 .table-view .column-header .label {
     -fx-text-fill: #fff;
-    -fx-font-family: "Times new roman";
+    -fx-font-family: "Times New Roman";
     -fx-font-size: 20px;
 }
 
 .textfield {
     -fx-background-color: linear-gradient(to bottom, #efefef, #eee);
     -fx-border-color: linear-gradient(to bottom right, #272b3f, #256b51);
-    -fx-border-width: .8px;
-    -fx-font-family: "Times new roman";
+    -fx-border-width: 0.8px;
+    -fx-font-family: "Times New Roman";
     -fx-border-radius: 4px;
 }
 
@@ -70,8 +70,9 @@
     -fx-background-color: transparent;
     -fx-border-color: linear-gradient(to bottom right, #272b3f, #256b51);
     -fx-border-radius: 5px;
-    -fx-size: 40px;
-    -fx-font-family: "Times new roman";
+    /* -fx-size remplacé par des propriétés appropriées */
+    -fx-pref-width: 40px;
+    -fx-font-family: "Times New Roman";
     -fx-border-width: 1px;
     -fx-background-radius: 0px 0px 0px 28px;
 }
@@ -81,19 +82,19 @@
 }
 
 .button-crud {
-    -fx-background-radius: 10; /* Définit le rayon de la bordure pour l'arrondir */
-    -fx-border-radius: 7; /* Définit le rayon de la bordure si une bordure est définie */
+    -fx-background-radius: 10;
+    -fx-border-radius: 7;
 }
 
 .image {
-    -fx-background-radius: 10; /* Définit le rayon de la bordure pour l'arrondir */
-    -fx-border-radius: 7; /* Définit le rayon de la bordure si une bordure est définie */
+    -fx-background-radius: 10;
+    -fx-border-radius: 7;
 }
 
-.textfield-buttonChoise{
+.textfield-buttonChoise {
     -fx-background-color: linear-gradient(to bottom, #efefef, #eee);
     -fx-border-color: linear-gradient(to bottom right, #272b3f, #256b51);
     -fx-border-radius: 4px;
-    -fx-border-width: .8px;
-    -fx-font-family: "Times new roman";
+    -fx-border-width: 0.8px;
+    -fx-font-family: "Times New Roman";
 }
