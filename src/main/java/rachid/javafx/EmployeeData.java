@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class EmployeeData {
     
-    private Integer employee_id;
+    private int employee_id;
     private String prenom;
     private String nom;
     private String genre;
@@ -26,11 +26,11 @@ public class EmployeeData {
     //     this.membreDate = membreDate;
     // }
 
-    public Integer getEmployee_id() {
+    public int getEmployee_id() {
         return this.employee_id;
     }
 
-    public void setEmployee_id(Integer employee_id) {
+    public void setEmployee_id(int employee_id) {
         this.employee_id = employee_id;
     }
 

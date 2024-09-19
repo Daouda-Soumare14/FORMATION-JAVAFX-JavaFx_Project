@@ -2,7 +2,6 @@ package rachid.javafx;
 
 import java.beans.Statement;
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,7 +10,6 @@ import java.sql.ResultSet;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,6 +34,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -86,63 +85,52 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
     private PreparedStatement prepare;
     private ResultSet result;
 
+    
     public void addEmpoyeeInsertImage() {
-        FileChooser open = new FileChooser();
-        File file = open.showOpenDialog(main_form.getScene().getWindow());
-
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.jpeg", "*.png", "*.jpg"));
+        File file = fileChooser.showOpenDialog(main_form.getScene().getWindow());
+    
         if (file != null) {
             GetData.path = file.getAbsolutePath();
-
+    
+            // Debug : Affiche le chemin de l'image dans la console
+            System.out.println("Chemin de l'image : " + GetData.path);
+    
             Image image = new Image(file.toURI().toString(), 101, 150, false, true);
             addEmployee_image.setImage(image);
         }
     }
-
-    // public void getData()
-    // {
-    // EmployeeData employeeData =
-    // addEmployee_tableView.getSelectionModel().getSelectedItem();
-    // int num = addEmployee_tableView.getSelectionModel().getSelectedIndex();
-
-    // if ((num -1) < -1) {return;}
-
-    // addEmployee_employeeID.setText(String.valueOf(employeeData.getEmployee_id()));
-    // addEmployee_prenom.setText(employeeData.getPrenom());
-    // addEmployee_nom.setText(employeeData.getNom());
-    // addEmployee_phoneNum.setText(employeeData.getPhoneNum());
-
-    // String uri = "file:" + employeeData.getImage();
-
-    // image = new Image(uri, 101, 150, false, true);
-    // addEmployee_image.setImage(image);
-
-    // }
-
+    
     public void getData() {
         EmployeeData employeeData = addEmployee_tableView.getSelectionModel().getSelectedItem();
         int num = addEmployee_tableView.getSelectionModel().getSelectedIndex();
-
+    
         if (num < 0) {
             return;
         }
-
+    
         addEmployee_employeeID.setText(String.valueOf(employeeData.getEmployee_id()));
         addEmployee_prenom.setText(employeeData.getPrenom());
         addEmployee_nom.setText(employeeData.getNom());
         addEmployee_phoneNum.setText(employeeData.getPhoneNum());
-
-        String imagePath = employeeData.getImage(); // Assurez-vous que getImage() renvoie le chemin correct
-
+    
+        String imagePath = employeeData.getImage();
+    
+        // Debug : Affiche le chemin de l'image dans la console
+        System.out.println("l'id de l'employe : " + employeeData.getEmployee_id());
+        System.out.println("Chemin de l'image de l'employé : " + imagePath);
+    
         if (imagePath != null && !imagePath.isEmpty()) {
-            String uri = "file:" + imagePath; // Construction du chemin d'accès à l'image
-
+            String uri = "file:" + imagePath;
+    
             Image image = new Image(uri, 101, 150, false, true);
-            addEmployee_image.setImage(image); // Affiche l'image
-
+            addEmployee_image.setImage(image);
         } else {
             System.out.println("Chemin de l'image non spécifié.");
         }
     }
+    
 
     // public void displayUsername()
     // {
@@ -159,6 +147,7 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
             home_btn.setStyle("-fx-background-color: linear-gradient(to bottom right, #3a4368, #28966c);");
             addEmployee_btn.setStyle("-fx-background-color: transparent");
             salary_btn.setStyle("-fx-background-color: transparent");
+
         } else if (event.getSource() == addEmployee_btn) {
             home_form.setVisible(false);
             addEmployee_form.setVisible(true);
@@ -167,6 +156,7 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
             addEmployee_btn.setStyle("-fx-background-color: linear-gradient(to bottom right, #3a4368, #28966c);");
             home_btn.setStyle("-fx-background-color: transparent");
             salary_btn.setStyle("-fx-background-color: transparent");
+
         } else if (event.getSource() == salary_btn) {
             home_form.setVisible(false);
             addEmployee_form.setVisible(false);
@@ -214,14 +204,6 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
                 showError("Error lors de l'insertion", e.getMessage());
             }
         }
-        // else{
-        // String check = "SELECT employee_id FROM employee WHERE employee_id = ' "
-        // + addEmployee_employeeID.getText() +" ' ";
-
-        // statement = connect.createStatement();
-        // result = statement.executeQuery(check);
-        // }
-
     }
 
     public void addEmpoyeeReset() {
@@ -323,6 +305,7 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
                 employeeData.setGenre(result.getString("genre"));
                 employeeData.setPhoneNum(result.getString("phoneNum"));
                 employeeData.setPosition(result.getString("position"));
+                employeeData.setImage(result.getString("image"));
                 employeeData.setMembreDate(result.getDate("membreDate"));
 
                 employeeDatas.add(employeeData);
@@ -345,10 +328,15 @@ public class DashboardEmployeeManagementSystemController implements Initializabl
         addEmployee_col_date.setCellValueFactory(new PropertyValueFactory<EmployeeData, Date>("membreDate"));
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void comboBox()
+    {
         addEmployee_position.setItems(FXCollections.observableArrayList("Developpement web", "Ciber securite", "Comptabilite", "Administration"));
         addEmployee_genre.setItems(FXCollections.observableArrayList("Male", "Femele"));
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        comboBox();
         showEmpoyee();
     }
 }
